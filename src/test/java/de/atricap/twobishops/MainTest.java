@@ -11,8 +11,9 @@ public class MainTest {
     @Test
     public void main2ShouldExecute() {
         Scanner scan = new Scanner("1\nA1 A1");
+        TestableMain mainObj = new TestableMain(scan);
 
-        Main.main2(scan);
+        mainObj.main2();
 
         assertTrue(true);
     }
