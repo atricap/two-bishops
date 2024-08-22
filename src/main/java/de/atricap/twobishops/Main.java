@@ -12,8 +12,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main mainObj = new Main(new Scanner(System.in));
-        mainObj.main2();
+        try (Scanner scan = new Scanner(System.in)) {
+            Main mainObj = new Main(scan);
+            mainObj.main2();
+        }
     }
 
     void main2() {
