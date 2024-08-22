@@ -19,48 +19,68 @@ public class Main {
     }
 
     void main2() {
-        int tests = scan.nextInt();
-        scan.nextLine();  // Consume newline left-over
-
+        int tests = readTestCount();
 
         for (int i = 0; i < tests; i++) {
-            char[] line = scan.nextLine().replaceAll("\\s+", "").toCharArray();
-            Point fB = new Point(line[0] - 65, line[1] - 48); //fB = first Bishop
-            Point sB = new Point(line[2] - 65, line[3] - 48); //sB = second Bishop
+            char[] line = readLine();
+            Point fB = Point.fromReadable(line[0], line[1]); //fB = first Bishop
+            Point sB = Point.fromReadable(line[2], line[3]); //sB = second Bishop
 
-            // same point
-            if (fB.x == sB.x && fB.y == sB.y) {
+            if (fB.equals(sB)) {
 
-                systemOutPrintln(0 + " " + (char) ('A' + fB.x) + " " + fB.y);
+                systemOutPrintln("0 %s".formatted(fB));
 
-                // calculating the slope (y2-y1)/(x2-x1). It has to be written like that because division by zero can occur!
-            } else if (Math.abs(fB.x - sB.x) == Math.abs(fB.y - sB.y)) {
+            } else if (isSameSlope(fB, sB)) {
 
-                systemOutPrintln(1 + " " + (char) ('A' + fB.x) + " " + fB.y + " "+ (char) ('A' + sB.x) + " " + sB.y);
+                systemOutPrintln("1 %s %s".formatted(fB, sB));
 
-                // are they the same color?
-            } else if ((Math.abs(fB.x + fB.y) % 2) != (Math.abs(sB.x + sB.y) % 2)) {
+            } else if (isSameColor(fB, sB)) {
 
                 systemOutPrintln("Impossible");
 
             } else {
-                //negative slope for attacker
-                int x = ((fB.y + fB.x) - (sB.y - sB.x)) / 2;
-                int y = x + (sB.y - sB.x);
+                // negative slope for attacker
+                int x = getSlopeX(fB, sB);
+                int y = getSlopeY(x, sB);
 
                 //x or y are out of bounds, to avoid it, we get a positive slope for the attacker
-                if (x < 1 || x > 8 || y < 1 || y > 8) {
-                    x = ((sB.y + sB.x) - (fB.y - fB.x)) / 2;
-                    y = x + (fB.y - fB.x);
+                if (Point.outOfBounds(x, y)) {
+                    x = getSlopeX(sB, fB);
+                    y = getSlopeY(x, fB);
                 }
 
-                systemOutPrintln(2 + " " + (char) ('A' + fB.x) + " " + fB.y + " " +
-                        (char) ('A' + x) + " " + y + " " + (char) ('A' + sB.x) + " " + sB.y);
+                systemOutPrintln("2 %s %s %d %s".formatted(fB, (char) ('A' + x), y, sB));
             }
-
         }
-        //because I do clean Java!
-        scan.close();
+    }
+
+    private int readTestCount() {
+        int tests = scan.nextInt();
+        scan.nextLine();  // Consume newline left-over
+        return tests;
+    }
+
+    private char[] readLine() {
+        return scan.nextLine().replaceAll("\\s+", "").toCharArray();
+    }
+
+    /**
+     * calculating the slope (y2-y1)/(x2-x1). It has to be written like that because division by zero can occur!
+     */
+    private static boolean isSameSlope(Point fB, Point sB) {
+        return Math.abs(fB.x - sB.x) == Math.abs(fB.y - sB.y);
+    }
+
+    private static boolean isSameColor(Point fB, Point sB) {
+        return (Math.abs(fB.x + fB.y) % 2) != (Math.abs(sB.x + sB.y) % 2);
+    }
+
+    private static int getSlopeX(Point fB, Point sB) {
+        return ((fB.y + fB.x) - (sB.y - sB.x)) / 2;
+    }
+
+    private static int getSlopeY(int x, Point sB) {
+        return x + (sB.y - sB.x);
     }
 
     protected void systemOutPrintln(String s) {
