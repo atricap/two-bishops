@@ -1,5 +1,5 @@
-# Two Bishops - Chess Refactoring Excercise
+= Two Bishops - Chess Refactoring Excercise
 
 Calculating the intersection point of two bishops
 
-From https://coderanch.com/t/716893/engineering/Refactoring-Exercise[https://coderanch.com/t/716893/engineering/Refactoring-Exercise]
+Found on https://coderanch.com/t/716893/engineering/Refactoring-Exercise[coderanch.com]
