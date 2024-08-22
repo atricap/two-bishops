@@ -15,6 +15,10 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
+        main2(scan);
+    }
+
+    static void main2(Scanner scan) {
         int tests = scan.nextInt();
         scan.nextLine();  // Consume newline left-over
 
